@@ -11,12 +11,19 @@ Task_2
 ## Запуск
 
 ```bash
-python -m pip install -r requirements.txt
-python -m pytest -v
+python3 -m pip install -r requirements.txt
+python3 -m pytest -v --alluredir=allure-results
+allure generate allure-results --clean -o allure-report
 ```
+
+Для просмотра отчёта запусти `allure open allure-report`. Для генерации HTML-отчёта
+нужен установленный Allure Commandline; `allure-pytest` устанавливается из
+`requirements.txt`.
 
 По умолчанию тесты обращаются к `https://qa-stellarburgers.education-services.ru`.
 Чтобы указать другой адрес API, задайте переменную окружения `STELLAR_API_URL`.
 
-Тесты создают уникальных пользователей и заказы на тестовом сервисе. У API нет
-ручки удаления пользователя или заказа, поэтому созданные данные не удаляются.
+Тесты сгруппированы по классам соответствующих эндпоинтов. Фикстура удаляет
+созданного тестового пользователя через `DELETE /api/auth/user` после каждого
+теста. Созданные заказы остаются на тестовом сервисе: API не предоставляет
+ручку для удаления заказов.
